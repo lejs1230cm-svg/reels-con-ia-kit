@@ -58,7 +58,20 @@ Herramientas que aparecen: `publish_reel`, `upload_video`, `delete_video`, `get_
 
 Copia cada carpeta de `skills/` a tus skills de Claude (o súbelas desde *Configuración › Capacidades › Skills*). Empieza por `reels-guionista`.
 
-## 7. Voz (opcional)
+## 7. Guion con LLM gratis (opcional)
+
+Si no usas Claude, `guion/llm.py` genera 3 ganchos, guion y caption con una API gratuita. Pon una clave en el `.env`:
+`GEMINI_API_KEY` ([aistudio.google.com/apikey](https://aistudio.google.com/apikey)) o `GROQ_API_KEY` ([console.groq.com/keys](https://console.groq.com/keys)).
+
+```bash
+cd guion
+python llm.py "por qué la mayoría abandona el gimnasio en febrero" --duracion 30 --salida guion.txt
+python llm.py "idea" --provider groq
+```
+
+Usa `guion/voice.md` si existe. Revisa el resultado con `gancho.py` y `beats.py` antes de producir.
+
+## 8. Voz (opcional)
 
 ```bash
 cd guion
@@ -69,7 +82,7 @@ python voz_cine.py ../video/public/voz/mi-guion
 
 Motores: `elevenlabs` (pago, mejor calidad), `kokoro` (gratis, local), `edge`, `azure`. Para tu propia voz grabada: `align.py`.
 
-## 8. Renderizar
+## 9. Renderizar
 
 ```bash
 cd video

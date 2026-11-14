@@ -35,7 +35,7 @@ Idea → 3 ganchos puntuados → guion → tiempos → caption → voz → video
 |---|---|
 | `skills/` | 4 skills para Claude (escritorio o Claude Code): guionista, video, servidor de Instagram y producción en lote. |
 | `mcp/` | Servidor MCP de Instagram: publicar Reels, leer métricas, detectar patrones de lo que funciona. |
-| `guion/` | Herramientas en Python sin dependencias: puntuador de ganchos (26 fórmulas en español), hoja de tiempos, control del caption, voz con IA, procesado "de cine" de la voz. |
+| `guion/` | Herramientas en Python sin dependencias: puntuador de ganchos (26 fórmulas en español), hoja de tiempos, control del caption, guion con LLM gratis (Gemini o Groq), voz con IA, procesado "de cine" de la voz. |
 | `video/` | Plantilla de Remotion 1080×1920: apertura con tormenta y chispas generadas por código, títulos centrados en zona segura, subtítulos quemados, efectos de sonido. |
 | `docs/` | Instalación paso a paso. |
 
