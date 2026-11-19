@@ -5,6 +5,9 @@ Proveedores:
   gemini (default)  Google AI Studio, capa gratis. GEMINI_API_KEY en el .env
                     (clave en https://aistudio.google.com/apikey). Modelo: GEMINI_MODEL
   groq              Groq, capa gratis. GROQ_API_KEY en el .env. Modelo: GROQ_MODEL
+  omnirouter        Cualquier OmniRouter (u otro endpoint compatible con OpenAI).
+                    OMNIROUTER_BASE_URL (ej. https://tu-space.hf.space/v1),
+                    OMNIROUTER_API_KEY (opcional) y OMNIROUTER_MODEL en el .env
 
 Uso:
   python llm.py "por qué la mayoría abandona el gimnasio en febrero"
@@ -74,21 +77,37 @@ def gemini(prompt, env):
         raise SystemExit(f"Respuesta inesperada de Gemini: {json.dumps(data)[:400]}")
 
 
+def chat_openai(name, base_url, key, model, prompt):
+    """Llamada a /chat/completions de cualquier API compatible con OpenAI."""
+    headers = {"Content-Type": "application/json"}
+    if key:
+        headers["Authorization"] = f"Bearer {key}"
+    data = post(base_url.rstrip("/") + "/chat/completions", headers,
+                {"model": model, "messages": [{"role": "user", "content": prompt}]})
+    try:
+        return data["choices"][0]["message"]["content"]
+    except (KeyError, IndexError, TypeError):
+        raise SystemExit(f"Respuesta inesperada de {name}: {json.dumps(data)[:400]}")
+
+
 def groq(prompt, env):
     key = get("GROQ_API_KEY", env)
     if not key:
         raise SystemExit("Falta GROQ_API_KEY en el .env (https://console.groq.com/keys).")
-    model = get("GROQ_MODEL", env, "llama-3.3-70b-versatile")
-    data = post("https://api.groq.com/openai/v1/chat/completions",
-                {"Content-Type": "application/json", "Authorization": f"Bearer {key}"},
-                {"model": model, "messages": [{"role": "user", "content": prompt}]})
-    try:
-        return data["choices"][0]["message"]["content"]
-    except (KeyError, IndexError):
-        raise SystemExit(f"Respuesta inesperada de Groq: {json.dumps(data)[:400]}")
+    return chat_openai("Groq", "https://api.groq.com/openai/v1", key,
+                       get("GROQ_MODEL", env, "llama-3.3-70b-versatile"), prompt)
 
 
-PROVIDERS = {"gemini": gemini, "groq": groq}
+def omnirouter(prompt, env):
+    base = get("OMNIROUTER_BASE_URL", env)
+    model = get("OMNIROUTER_MODEL", env)
+    if not base or not model:
+        raise SystemExit("Faltan OMNIROUTER_BASE_URL y/o OMNIROUTER_MODEL en el .env "
+                         "(la URL termina en /v1; el modelo es el nombre que expone tu router).")
+    return chat_openai("OmniRouter", base, get("OMNIROUTER_API_KEY", env), model, prompt)
+
+
+PROVIDERS = {"gemini": gemini, "groq": groq, "omnirouter": omnirouter}
 
 
 def main():
