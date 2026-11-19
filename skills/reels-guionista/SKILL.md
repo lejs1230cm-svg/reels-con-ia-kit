@@ -19,6 +19,7 @@ Corren con `python3`, sin dependencias ni red.
 | `voice.md` | Perfil de voz de la cuenta (se crea desde `voice.plantilla.md`). **Leerlo primero, siempre.** |
 | `ganchos.json` | 26 fórmulas de gancho en español: plantilla, ejemplo, versión en pantalla, cuándo sirve, cómo se arruina. |
 | `gancho.py` | Puntúa ganchos (0-100) en 5 propiedades: LARGO, CONCRETO, EN JUEGO, CARGA, A QUIÉN. `--formulas` nombra la fórmula. |
+| `llm.py` | Borrador de ganchos + guion + caption con Gemini o Groq (capa gratis). Requiere clave en `.env`. Siempre pasar el resultado por `gancho.py` y `beats.py`. |
 | `beats.py` | Guion → hoja de tiempos a 155 palabras/min. Marca gancho >3 s, beat >4 s, falta de loop. `--remotion` exporta `timeline.json`. |
 | `caption.py` | Muestra los 125 caracteres visibles y revisa primera línea, hashtags (máx. 5), un solo pedido. |
 
