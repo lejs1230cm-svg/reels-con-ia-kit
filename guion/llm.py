@@ -54,6 +54,8 @@ def get(name, env, default=None):
 
 
 def post(url, headers, body):
+    # Sin User-Agent propio, Cloudflare (Groq y otros) rechaza "Python-urllib" con 403/1010.
+    headers = {"User-Agent": "reels-con-ia-kit/1.0", **headers}
     req = urllib.request.Request(url, data=json.dumps(body).encode(), headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=90) as r:
