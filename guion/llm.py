@@ -5,9 +5,6 @@ Proveedores:
   gemini (default)  Google AI Studio, capa gratis. GEMINI_API_KEY en el .env
                     (clave en https://aistudio.google.com/apikey). Modelo: GEMINI_MODEL
   groq              Groq, capa gratis. GROQ_API_KEY en el .env. Modelo: GROQ_MODEL
-  omnirouter        Cualquier OmniRouter (u otro endpoint compatible con OpenAI).
-                    OMNIROUTER_BASE_URL (ej. https://tu-space.hf.space/v1),
-                    OMNIROUTER_API_KEY (opcional) y OMNIROUTER_MODEL en el .env
 
 Uso:
   python llm.py "por qué la mayoría abandona el gimnasio en febrero"
@@ -100,16 +97,7 @@ def groq(prompt, env):
                        get("GROQ_MODEL", env, "llama-3.3-70b-versatile"), prompt)
 
 
-def omnirouter(prompt, env):
-    base = get("OMNIROUTER_BASE_URL", env)
-    model = get("OMNIROUTER_MODEL", env)
-    if not base or not model:
-        raise SystemExit("Faltan OMNIROUTER_BASE_URL y/o OMNIROUTER_MODEL en el .env "
-                         "(la URL termina en /v1; el modelo es el nombre que expone tu router).")
-    return chat_openai("OmniRouter", base, get("OMNIROUTER_API_KEY", env), model, prompt)
-
-
-PROVIDERS = {"gemini": gemini, "groq": groq, "omnirouter": omnirouter}
+PROVIDERS = {"gemini": gemini, "groq": groq}
 
 
 def main():
