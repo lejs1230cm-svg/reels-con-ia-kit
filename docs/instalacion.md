@@ -67,6 +67,7 @@ Si no usas Claude, `guion/llm.py` genera 3 ganchos, guion y caption con una API 
 cd guion
 python llm.py "por qué la mayoría abandona el gimnasio en febrero" --duracion 30 --salida guion.txt
 python llm.py "idea" --provider groq
+python llm.py "idea" --provider ovh    # OVHcloud: gratis y SIN clave (2 pedidos/min)
 ```
 
 Usa `guion/voice.md` si existe. Revisa el resultado con `gancho.py` y `beats.py` antes de producir.

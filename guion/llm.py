@@ -5,6 +5,8 @@ Proveedores:
   gemini (default)  Google AI Studio, capa gratis. GEMINI_API_KEY en el .env
                     (clave en https://aistudio.google.com/apikey). Modelo: GEMINI_MODEL
   groq              Groq, capa gratis. GROQ_API_KEY en el .env. Modelo: GROQ_MODEL
+  ovh               OVHcloud AI Endpoints, gratis SIN clave (2 pedidos/min por modelo).
+                    Modelo: OVH_MODEL (default gpt-oss-120b). OVH_API_KEY opcional.
 
 Uso:
   python llm.py "por qué la mayoría abandona el gimnasio en febrero"
@@ -94,10 +96,15 @@ def groq(prompt, env):
     if not key:
         raise SystemExit("Falta GROQ_API_KEY en el .env (https://console.groq.com/keys).")
     return chat_openai("Groq", "https://api.groq.com/openai/v1", key,
-                       get("GROQ_MODEL", env, "llama-3.3-70b-versatile"), prompt)
+                       get("GROQ_MODEL", env, "openai/gpt-oss-120b"), prompt)
 
 
-PROVIDERS = {"gemini": gemini, "groq": groq}
+def ovh(prompt, env):
+    return chat_openai("OVHcloud", "https://oai.endpoints.kepler.ai.cloud.ovh.net/v1",
+                       get("OVH_API_KEY", env), get("OVH_MODEL", env, "gpt-oss-120b"), prompt)
+
+
+PROVIDERS = {"gemini": gemini, "groq": groq, "ovh": ovh}
 
 
 def main():
